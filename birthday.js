@@ -1,23 +1,48 @@
-// Handling the form submission and RSVP response
+// Countdown Timer
+const eventDate = new Date("August 17, 2025 00:00:00").getTime(); // Set the event date
+
+function updateTimer() {
+    const now = new Date().getTime();
+    const distance = eventDate - now; // Time remaining
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById("days").textContent = days;
+    document.getElementById("hours").textContent = hours;
+    document.getElementById("minutes").textContent = minutes;
+    document.getElementById("seconds").textContent = seconds;
+
+    // If the countdown is over
+    if (distance < 0) {
+        clearInterval(countdownInterval);
+        document.getElementById("timer").textContent = "The event has started!";
+    }
+}
+
+const countdownInterval = setInterval(updateTimer, 1000); // Update the timer every second
+
+// RSVP Form Submission
 document.getElementById('rsvpForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Prevent form submission to the server
+    event.preventDefault(); // Prevent the form from submitting to the server
     
-    // Getting the form data
+    // Get form data
     const name = document.getElementById('name').value;
     const attending = document.getElementById('attending').value;
     
-    // Checking if the user filled out the form
     if (name && attending) {
         let responseMessage = '';
         
-        // Response based on the RSVP
+        // Message based on the RSVP
         if (attending === 'Yes') {
-            responseMessage = `Thank you, ${name}! We're excited to see you on August 17th! 🎉`;
+            responseMessage = `Thank you, ${name}! We're thrilled to have you join us on August 17th! 🎉`;
         } else {
             responseMessage = `Sorry to hear that, ${name}. We'll miss you, but hope to see you soon! 🎈`;
         }
 
-        // Displaying the response message
+        // Show response message
         document.getElementById('responseMessage').innerText = responseMessage;
         document.getElementById('responseMessage').style.display = 'block';
 
